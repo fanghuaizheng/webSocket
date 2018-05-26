@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+     <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/websocket.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:inline="javascript">
+
+        ctxPath = [[${#httpServletRequest.getContextPath()}]];
+
+        console.log(ctxPath);
+
+        $(function () {
+            //url = ws://localhost:8080/wechat/websocket
+            //前面是协议，后面是项目名称/监听的url,加入uid是为了区分不同的页面
+            initSocket("ws://localhost:9090/websocket?uid="+parseInt(Math.random()*100));
+
+            //获得消息事件
+            socket.onmessage = function(msg) {
+                console.log(msg.data);
+                //发现消息进入    调后台获取
+                // getCallingList();
+            };
+
+            $("#sendMessage").click(function () {
+                socket.send("我要给服务器发送消息")
+            });
+
+        })
+
+    </script>
+</head>
+<body>
+<p>你好啊</p>
+<button id="sendMessage">发送消息</button>
+</body>
+</html>
